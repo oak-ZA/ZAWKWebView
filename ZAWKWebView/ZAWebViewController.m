@@ -135,8 +135,30 @@ static NSString *const closeWebView = @"closeWebView";
     configuration.preferences.javaScriptCanOpenWindowsAutomatically = NO;
     //最小字体
     configuration.preferences.minimumFontSize = 15;
+    //添加cookie参数
+//    NSMutableDictionary *cookDic = [NSMutableDictionary new];
+//    [cookDic setObject:@(SharedData.user.userId) forKey:@"userId"];
+//    [cookDic setObject:SharedData.user.userKey forKey:@"userKey"];
+//    [cookDic setObject:SharedData.channelNumber forKey:@"channel"];
+//    [cookDic setObject:[KLUtil appVersion] forKey:@"version"];
+//    [cookDic setObject:ShareAppInfo.buildId forKey:@"packageName"];
+//
+//    NSInteger role = SharedData.user.categoryId>1?2:1;
+//    [cookDic setObject:@(role) forKey:@"role"];
+//
+//    if (webSourceId > 0) {
+//        [cookDic setObject:@(webSourceId) forKey:@"sourceId"];
+//    }
+//    if (_nobleId) { //有贵族, 则添加进cookie
+//        [cookDic setObject:@(_nobleId) forKey:@"nobleId"];
+//    }
+//
+//    NSString *jsonString = [NSString convertToJsonData:cookDic];
+    //添加cookie
+    WKUserScript *cookieScript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"document.cookie = 'vchat=%@';", @"jsonString"] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
     //用户交互控制器
     WKUserContentController *uerConrtroll = [[WKUserContentController alloc] init];
+    [uerConrtroll addUserScript:cookieScript];
     //添加js函数,设置代理
     [uerConrtroll addScriptMessageHandler:[[ZAWeakScriptMessageDelegate alloc] initWithDelegate:self] name:rightButton];
     [uerConrtroll addScriptMessageHandler:[[ZAWeakScriptMessageDelegate alloc] initWithDelegate:self] name:closeWebView];
